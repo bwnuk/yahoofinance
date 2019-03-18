@@ -2,6 +2,7 @@ package com.github.wnuk.yahoofinance.utilities;
 
 import android.util.Log;
 
+import com.github.wnuk.yahoofinance.data.ChartElement;
 import com.github.wnuk.yahoofinance.data.Market;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
@@ -38,21 +39,32 @@ public class JsonUtils {
         return resultsMarkets;
     }
 
-    public static String[] getDataListChart(HttpResponse<JsonNode> results){
+    public static ArrayList<ChartElement> getDataListChart(HttpResponse<JsonNode> results){
         final String J_SYM = "exchange";
         final String J_fEN = "fullExchangeName";
 
-        String[] resultsString = new String[5];
+        ArrayList<ChartElement> resultsChart = new ArrayList();
         try {
             JSONArray array =  results.getBody().getObject()
                     .getJSONObject("chart").getJSONArray("result");
 
-            Log.d(TAG, array.getJSONObject(0).getJSONArray("timestamp").toString());
+            JSONArray stamp = array.getJSONObject(0).getJSONArray("timestamp");
+
+
+           for (int i = 0; i < stamp.length(); i++){
+                JSONArray adj = array.getJSONObject(0).getJSONObject("indicators")
+                        .getJSONArray("adjclose")
+                        .getJSONObject(0)
+                        .getJSONArray("adjclose");
+
+                resultsChart.add(new ChartElement(stamp.getString(i), adj.getString(i)));
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return resultsString;
+
+        return resultsChart;
     }
 
 }
