@@ -16,19 +16,20 @@ import static android.content.ContentValues.TAG;
 
 public class JsonUtils {
 
-    public static ArrayList<Market> getDataList(HttpResponse<JsonNode> results){
+    public static ArrayList<Market> getDataListMarkets(HttpResponse<JsonNode> results){
         final String J_SYM = "exchange";
         final String J_fEN = "fullExchangeName";
 
         ArrayList<Market> resultsMarkets = new ArrayList();
         try {
-            JSONArray array =  results.getBody().getObject().getJSONObject("marketSummaryResponse").getJSONArray("result");
+            JSONArray array =  results.getBody().getObject()
+                    .getJSONObject("marketSummaryResponse").getJSONArray("result");
 
 
             for (int i = 0; i < array.length(); i++){
                 JSONObject jsonObject = array.getJSONObject(i);
                 resultsMarkets.add(new Market(jsonObject.getString(J_SYM), jsonObject.getString(J_fEN)));
-                Log.e(TAG, jsonObject.getString(J_SYM) + " ------ " + jsonObject.getString(J_fEN));
+                //Log.e(TAG, jsonObject.getString(J_SYM) + " ------ " + jsonObject.getString(J_fEN));
             }
 
         } catch (JSONException e) {
@@ -36,4 +37,22 @@ public class JsonUtils {
         }
         return resultsMarkets;
     }
+
+    public static String[] getDataListChart(HttpResponse<JsonNode> results){
+        final String J_SYM = "exchange";
+        final String J_fEN = "fullExchangeName";
+
+        String[] resultsString = new String[5];
+        try {
+            JSONArray array =  results.getBody().getObject()
+                    .getJSONObject("chart").getJSONArray("result");
+
+            Log.d(TAG, array.getJSONObject(0).getJSONArray("timestamp").toString());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return resultsString;
+    }
+
 }

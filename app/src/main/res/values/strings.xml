@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Yahoo Finance</string>
+    <string name="action_refresh">Odswiez</string>
 </resources>
