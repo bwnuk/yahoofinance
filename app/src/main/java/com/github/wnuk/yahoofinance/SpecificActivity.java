@@ -95,7 +95,7 @@ public class SpecificActivity extends AppCompatActivity {
         {   // // X-Axis Style // //
             xAxis = chart.getXAxis();
             // axis range
-            xAxis.setAxisMaximum(5f);
+            xAxis.setAxisMaximum(4f);
             xAxis.setAxisMinimum(0f);
 
             // vertical grid lines
@@ -145,12 +145,14 @@ public class SpecificActivity extends AppCompatActivity {
         ArrayList<Entry> values = new ArrayList<>();
 
         for (int i = 0; i < data.size(); i++) {
-
-            values.add(new Entry(i,
-                    Float.parseFloat(data.get(i).getValue()), getResources().getDrawable(R.drawable.ic_launcher_background)));
-
-            Log.e(TAG, Float.parseFloat(data.get(i).getTime())+ " ---------- "+
-                    Float.parseFloat(data.get(i).getValue()));
+            try {
+                if (data.get(i).getValue() != null) {
+                    values.add(new Entry(i, Float.parseFloat(data.get(i).getValue()),
+                            getResources().getDrawable(R.drawable.baseline_stars_black_18dp)));
+                }
+            }catch (Exception e){
+                Log.getStackTraceString(e);
+            }
         }
 
         LineDataSet set1;
@@ -205,7 +207,7 @@ public class SpecificActivity extends AppCompatActivity {
             // set color of filled area
             if (Utils.getSDKInt() >= 18) {
                 // drawables only supported on api level 18 and above
-                Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_launcher_background);
+                Drawable drawable = ContextCompat.getDrawable(this, R.drawable.fade_red);
                 set1.setFillDrawable(drawable);
             } else {
                 set1.setFillColor(Color.BLACK);
