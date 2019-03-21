@@ -2,6 +2,9 @@ package com.github.wnuk.yahoofinance.data;
 
 import androidx.annotation.NonNull;
 
+/**
+ * Finance institution
+ */
 public class Market {
     private String symbol;
     private String name;
