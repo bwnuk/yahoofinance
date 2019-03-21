@@ -1,18 +1,9 @@
 package com.github.wnuk.yahoofinance;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,6 +13,12 @@ import com.github.wnuk.yahoofinance.utilities.JsonUtils;
 import com.github.wnuk.yahoofinance.utilities.NetworkUtils;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
+
+import java.util.ArrayList;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class MainActivity extends AppCompatActivity implements MarketsAdapter.MarketAdapterOnClickHandler {
     private static final String TAG = "MyActivity";
@@ -61,13 +58,15 @@ public class MainActivity extends AppCompatActivity implements MarketsAdapter.Ma
         startActivity(intentToStartDetailActivity);
     }
 
+    /**
+     * Class to download data from api
+     */
     private class FetchFinancial extends AsyncTask<String, Void, ArrayList<Market>>{
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
         }
-
 
         @Override
         protected ArrayList<Market> doInBackground(String... params) {

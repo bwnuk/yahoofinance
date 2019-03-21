@@ -5,15 +5,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.github.wnuk.yahoofinance.data.Market;
-
 import java.util.ArrayList;
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+
+/**
+ * Recycle list adapter
+ */
 public class MarketsAdapter extends RecyclerView.Adapter<MarketsAdapter.MarketsAdapterViewHolder> {
 
     ArrayList<Market> data;

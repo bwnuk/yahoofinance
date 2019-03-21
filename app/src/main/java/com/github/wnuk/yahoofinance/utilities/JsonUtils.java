@@ -1,7 +1,5 @@
 package com.github.wnuk.yahoofinance.utilities;
 
-import android.util.Log;
-
 import com.github.wnuk.yahoofinance.data.ChartElement;
 import com.github.wnuk.yahoofinance.data.Market;
 import com.mashape.unirest.http.HttpResponse;
@@ -13,10 +11,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import static android.content.ContentValues.TAG;
-
 public class JsonUtils {
 
+    /**
+     * Parser to Market
+     * @param results, data from api
+     * @return
+     */
     public static ArrayList<Market> getDataListMarkets(HttpResponse<JsonNode> results){
         final String J_SYM = "exchange";
         final String J_fEN = "fullExchangeName";
@@ -39,6 +40,11 @@ public class JsonUtils {
         return resultsMarkets;
     }
 
+    /**
+     * Parser to ChartElement
+     * @param results data from api
+     * @return elements to create chart
+     */
     public static ArrayList<ChartElement> getDataListChart(HttpResponse<JsonNode> results){
         final String J_SYM = "exchange";
         final String J_fEN = "fullExchangeName";

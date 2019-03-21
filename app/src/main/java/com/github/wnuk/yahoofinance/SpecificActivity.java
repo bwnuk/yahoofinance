@@ -1,8 +1,5 @@
 package com.github.wnuk.yahoofinance;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
@@ -13,50 +10,51 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.TextView;
 
-import com.github.wnuk.yahoofinance.data.ChartElement;
-import com.github.wnuk.yahoofinance.utilities.JsonUtils;
-import com.github.wnuk.yahoofinance.utilities.NetworkUtils;
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
-
-import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendForm;
-import com.github.mikephil.charting.components.LimitLine;
-import com.github.mikephil.charting.components.LimitLine.LimitLabelPosition;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IFillFormatter;
-import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.Utils;
+import com.github.wnuk.yahoofinance.data.ChartElement;
+import com.github.wnuk.yahoofinance.databinding.ActivitySpecificBinding;
+import com.github.wnuk.yahoofinance.utilities.JsonUtils;
+import com.github.wnuk.yahoofinance.utilities.NetworkUtils;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
 
 import java.util.ArrayList;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
 
 public class SpecificActivity extends AppCompatActivity {
     private static final String TAG = "SpecificActivity";
 
     private String symbol;
-    private TextView mSymbol;
     private LineChart chart;
+    private ChartElement element;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_specific);
+        ActivitySpecificBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_specific);
         Intent intentThatStartedThisActivity = getIntent();
 
         if (intentThatStartedThisActivity != null) {
             if (intentThatStartedThisActivity.hasExtra(Intent.EXTRA_TEXT)) {
                 symbol = intentThatStartedThisActivity.getStringExtra(Intent.EXTRA_TEXT);
+
+                ChartElement element = new ChartElement(symbol);
+                binding.setElement(element);
 
                 loadData();
             }
@@ -67,6 +65,10 @@ public class SpecificActivity extends AppCompatActivity {
         new FetchSpecific().execute();
     }
 
+    /**
+     * Setting chart's view
+     * @param data
+     */
     private void chartView(ArrayList<ChartElement>data){
 
         chart = findViewById(R.id.chart);
@@ -113,7 +115,7 @@ public class SpecificActivity extends AppCompatActivity {
             yAxis.enableGridDashedLine(10f, 10f, 0f);
 
             // axis range
-            yAxis.setAxisMaximum(150f);
+            yAxis.setAxisMaximum(200f);
             yAxis.setAxisMinimum(20f);
         }
 
@@ -139,6 +141,7 @@ public class SpecificActivity extends AppCompatActivity {
 
     /**
      * Data provider for chart
+     * Setting view
      */
     private void setData(ArrayList<ChartElement> data) {
 
@@ -231,7 +234,6 @@ public class SpecificActivity extends AppCompatActivity {
             super.onPreExecute();
         }
 
-
         @Override
         protected ArrayList<ChartElement> doInBackground(String... params) {
             HttpResponse<JsonNode> results = NetworkUtils
@@ -249,7 +251,7 @@ public class SpecificActivity extends AppCompatActivity {
             if(data != null){
                 chartView(data);
             }else {
-
+                Log.e(TAG, "NULL DATA");
             }
         }
     }
